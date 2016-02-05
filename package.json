@@ -1,6 +1,6 @@
 {
   "name": "powa",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Package Oriented Web Application platform.",
   "main": "main.js",
   "scripts": {
@@ -11,6 +11,10 @@
     "powa": "cli.js"
   },
   "author": "Weisse",
+  "repository": { 
+	 "type": "git",
+	 "url": "https://github.com/weisse/powa.git"
+  },
   "license": "MIT",
   "dependencies": {
     "bluebird": "^3.1.1",

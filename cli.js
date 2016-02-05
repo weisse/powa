@@ -16,7 +16,7 @@ program
 
 program
     .command("client")
-    .description("it runs your awsome web application client")
+    .description("it runs your awesome web application client")
     	.option("-F --configFile <configFile>", "it defines the location of your configuration file")
     	.option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
     	.option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
@@ -62,7 +62,7 @@ program
 
 program
     .command("server")
-    .description("it serves your awsome web modules")
+    .description("it serves your fantastic web packages")
     	.option("-F --configFile <configFile>", "it defines the location of your configuration file")
     	.option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
     	.option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
@@ -102,7 +102,7 @@ program
 
 program
 	.command("bundle")
-	.description("it serves your awsome web modules")
+	.description("it does all things together")
 		.option("-F --configFile <configFile>", "it defines the location of your configuration file")
     	.option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
     	.option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
