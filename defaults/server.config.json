@@ -1,0 +1,10 @@
+{
+	
+	"packageRootPath":".",
+	"allowCors":true,
+	"allowCredentials":true,
+	"allowedOrigin":"*",
+	"allowedMethods":"*",
+	"allowedHeaders":"*"
+	
+}

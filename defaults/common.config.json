@@ -1,0 +1,11 @@
+{
+	
+	"host":"0.0.0.0",
+	"port":8080,
+	"httpsEnabled":false,
+	"httpsOptions":null,
+	"cluster":false,
+	"workers":0,
+	"resumeWorker":true
+
+}

@@ -1,0 +1,24 @@
+{
+  "name": "powa",
+  "version": "0.1.0",
+  "description": "Package Oriented Web Application platform.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node main.js"
+  },
+  "bin": {
+    "powa": "cli.js"
+  },
+  "author": "Weisse",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.1.1",
+    "colors": "^1.1.2",
+    "commander": "^2.9.0",
+    "express": "^4.13.3",
+    "open": "0.0.5",
+    "underscore": "^1.8.3"
+  },
+  "preferGlobal":true
+}

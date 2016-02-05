@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+	<body>
+		<script type="text/javascript" src="./statics/js/system-polyfills.js"></script>
+		<script type="text/javascript" src="./statics/js/system.js"></script>
+		<script type="text/javascript">
+			System.config({
+				basePackageURL:"@BASE_PACKAGE_URL",
+				mainPackage:"@MAIN_PACKAGE",
+				packagesDescriptor: {}
+			});
+			System.import("./statics/js/config/system.config.js").then(function(){
+				System.import("bootstrap");
+			});
+		</script>
+	</body>
+</html>
