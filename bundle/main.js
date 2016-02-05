@@ -66,11 +66,15 @@ module.exports = function(config){
 					
 					var workers = config.workers;
 					if(!workers) workers = require("os").cpus().length;
-					for(var i = 0; i < workers; i++) cluster.fork();
+					cluster.fork();
 					
-					cluster.on("exit", function(worker, code, signal) {
+					cluster.on("listening", function(){
+						if(--workers > 0) cluster.fork();
+					});
+					
+					cluster.on("exit", function(worker, code, signal){
 						console.warn("POWA".yellow + " bundle worker " + worker.id.toString().green + " died".red);
-					    if(config.resumeWorker) cluster.fork();
+						if(workers == 0 && config.resumeWorker) cluster.fork();
 					});
 					
 					res(app);
