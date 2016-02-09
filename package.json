@@ -5,15 +5,15 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"node main.js"
+    "start": "node main.js"
   },
   "bin": {
     "powa": "cli.js"
   },
   "author": "Weisse",
-  "repository": { 
-	 "type": "git",
-	 "url": "https://github.com/weisse/powa.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weisse/powa.git"
   },
   "license": "MIT",
   "dependencies": {
@@ -22,7 +22,8 @@
     "commander": "^2.9.0",
     "express": "^4.13.3",
     "open": "0.0.5",
+    "semver": "^5.1.0",
     "underscore": "^1.8.3"
   },
-  "preferGlobal":true
+  "preferGlobal": true
 }
