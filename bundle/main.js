@@ -5,7 +5,6 @@ var bluebird = require("bluebird");
 var path = require("path");
 var _ = require("underscore");
 var url = require("url");
-var app = express();
 var commonDefaults = require(path.resolve(__dirname, "../defaults/common.config.json"));
 var clientDefaults = require(path.resolve(__dirname, "../defaults/client.config.json"));
 var serverDefaults = require(path.resolve(__dirname, "../defaults/server.config.json"));
@@ -15,6 +14,13 @@ var serverEvalConfig = require(path.resolve(__dirname, "../server/evalConfig.js"
 var clientLoader = require(path.resolve(__dirname, "../client/loader.js"));
 var serverLoader = require(path.resolve(__dirname, "../server/loader.js"));
 var bootstrapText = require(path.join(__dirname, "../commons/bootstrapText/main.js"));
+var instantiateServer = require(path.join(__dirname, "../commons/instantiateServer.js"));
+var masterMessage = function(host, port){
+	return "POWA".yellow + " bundle is listening on HOST:" + host.cyan + " PORT:" + port.toString().cyan;
+};
+var workerMessage = function(host, port){
+	return "POWA".yellow + " bundle worker " + cluster.worker.id.toString().green + " is listening on HOST:" + host.cyan + " PORT:" + port.toString().cyan;
+};
 
 module.exports = function(config){
 	
@@ -33,76 +39,53 @@ module.exports = function(config){
 		 */
 		clientEvalConfig(config);
 		serverEvalConfig(config);
-		
-		/*
-		 * set application vars
-		 */
-		for(var attr in config) app.set(attr, config[attr]);
-		
-		clientLoader(app)
-		.then(serverLoader)
-		.then(function(app){
+
+		if(config.cluster){
 			
-			var host = app.get("host");
-			var port = app.get("port");
-			
-			if(config.httpsEnabled){
-				
-				var options = config.httpsOptions;
-				var server = require("https").createServer(options, app);
-				
-			}else{
-				
-				var server = require("http").createServer(app);
-				
-			}
-			
-			
-			if(config.cluster){
-				
-				if(cluster.isMaster){
-					
-					bootstrapText();
-					
-					var workers = config.workers;
-					if(!workers) workers = require("os").cpus().length;
-					cluster.fork();
-					
-					cluster.on("listening", function(){
-						if(--workers > 0) cluster.fork();
-					});
-					
-					cluster.on("exit", function(worker, code, signal){
-						console.warn("POWA".yellow + " bundle worker " + worker.id.toString().green + " died".red);
-						if(workers == 0 && config.resumeWorker) cluster.fork();
-					});
-					
-					res(app);
-					
-				}else{
-					
-					server.listen(port, host, function(){
-						
-						console.info("POWA".yellow + " bundle worker " + cluster.worker.id.toString().green + " is listening on", "HOST:", host.cyan, "PORT:", port.toString().cyan);
-						
-					});
-					
-				}
-				
-			}else{
+			if(cluster.isMaster){
 				
 				bootstrapText();
 				
-				server.listen(port, host, function(){
-					
-					console.info("POWA".yellow + " bundle is listening on", "HOST:", host.cyan, "PORT:", port.toString().cyan);
-					res(app);
-					
+				var workers = config.workers;
+				if(!workers) workers = require("os").cpus().length;
+				cluster.fork();
+				
+				cluster.on("listening", function(){
+					if(--workers > 0) cluster.fork();
+					else res();
+				});
+				
+				cluster.on("exit", function(worker, code, signal){
+					console.warn("POWA".yellow + " bundle worker " + worker.id.toString().green + " died".red);
+					if(workers == 0 && config.resumeWorker) cluster.fork();
+				});
+				
+			}else{
+				
+				var app = express();
+				for(var attr in config) app.set(attr, config[attr]);
+				
+				clientLoader(app)
+				.then(serverLoader).then(function(app){
+					instantiateServer(app, config, workerMessage);
+					res();
 				});
 				
 			}
 			
-		});
+		}else{
+			
+			bootstrapText();
+			var app = express();
+			for(var attr in config) app.set(attr, config[attr]);
+			
+			clientLoader(app)
+			.then(serverLoader).then(function(app){
+				instantiateServer(app, config, workerMessage);
+				res();
+			});
+			
+		}
 		
 	});
 	

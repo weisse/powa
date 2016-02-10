@@ -1,6 +1,7 @@
 var p = require("path");
 var express = require("express");
 var bluebird = require("bluebird");
+var speedyStatic = require("speedy-static");
 
 module.exports = function(app){
 	
@@ -13,8 +14,17 @@ module.exports = function(app){
 		}
 		
 		app.get("/:main", require(p.resolve(__dirname, "./services/index.js")));
-		app.use("/statics", express.static(p.resolve(__dirname, "./statics")));
-		res(app);
+		
+		new bluebird.Promise(function(res, rej){
+			
+			res(speedyStatic(p.resolve(__dirname, "./statics")));
+			
+		}).then(function(middleware){
+			
+			app.use("/statics", middleware);
+			res(app);
+			
+		});
 		
 	});
 	

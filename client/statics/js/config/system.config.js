@@ -29,11 +29,11 @@ System.config({
 		"img":"./statics/js/plugins/img.js",
 		
 		// utils
-		"bluebird":"./statics/js/utils/bluebird.js",
+		"bluebird":"./statics/js/utils/bluebird.min.js",
 		"semver":"./statics/js/utils/semver.js",
-		"underscore":"./statics/js/utils/underscore.js",
-		"aja":"./statics/js/utils/aja.js",
-		"traceur":"./statics/js/utils/traceur.js",
+		"underscore":"./statics/js/utils/underscore.min.js",
+		"aja":"./statics/js/utils/aja.min.js",
+		"traceur":"./statics/js/utils/traceur.min.js",
 		
 		// node modules
 		"assert": "./statics/js/node/assert.js",
