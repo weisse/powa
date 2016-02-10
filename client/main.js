@@ -10,7 +10,7 @@ var defaults = _.extend(_.clone(commonDefaults), clientDefaults);
 var evalConfig = require(p.resolve(__dirname, "./evalConfig.js"));
 var loader= require(p.resolve(__dirname, "./loader.js"));
 var bootstrapText = require(p.join(__dirname, "../commons/bootstrapText/main.js"));
-var instantiateServer = require(path.join(__dirname, "../commons/instantiateServer.js"));
+var instantiateServer = require(p.join(__dirname, "../commons/instantiateServer.js"));
 var masterMessage = function(host, port){
 	return "POWA".yellow + " client is listening on HOST:" + host.cyan + " PORT:" + port.toString().cyan;
 };

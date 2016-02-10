@@ -1,6 +1,6 @@
 {
   "name": "powa",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Package Oriented Web Application platform.",
   "main": "main.js",
   "scripts": {
