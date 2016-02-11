@@ -30,7 +30,7 @@ System.config({
 		
 		// utils
 		"bluebird":"./statics/js/utils/bluebird.min.js",
-		"semver":"./statics/js/utils/semver.js",
+		"semver":"./statics/js/utils/semver.min.js",
 		"underscore":"./statics/js/utils/underscore.min.js",
 		"aja":"./statics/js/utils/aja.min.js",
 		"traceur":"./statics/js/utils/traceur.min.js",
