@@ -6,6 +6,19 @@
 	"httpsOptions":null,
 	"cluster":false,
 	"workers":0,
-	"resumeWorker":true
+	"resumeWorker":true,
+	"compression": true,
+	"compression-level": 1,
+	"minify": false,
+	"minify-mangle": true,
+	"etag": true,
+	"last-modified": true,
+	"content-type": true,
+	"max-cache-age": 0,
+	"ignore-errors": false,
+	"browser-cache": true,
+	"browser-cache-max-age": 300,
+	"browser-cache-s-maxage": 300,
+	"prepare-cache": false
 
 }

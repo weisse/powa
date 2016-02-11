@@ -1,15 +1,18 @@
+var _ = require("underscore");
 var p = require("path");
 var express = require("express");
 var bluebird = require("bluebird");
 var speedyStatic = require("speedy-static");
 
-module.exports = function(app){
+module.exports = function(app, config){
 	
 	return new bluebird.Promise(function(res, rej){
 		
-		if(app.get("mainPackage")){
+		app.set("packageRootURL", config.packageRootURL);
+		
+		if(config.mainPackage){
 			
-			app.get("/", require(p.resolve(__dirname, "./services/preparedIndex.js"))(app.get("mainPackage")));
+			app.get("/", require(p.resolve(__dirname, "./services/preparedIndex.js"))(config.mainPackage));
 			
 		}
 		
@@ -17,7 +20,7 @@ module.exports = function(app){
 		
 		new bluebird.Promise(function(res, rej){
 			
-			res(speedyStatic(p.resolve(__dirname, "./statics")));
+			res(speedyStatic(p.resolve(__dirname, "./statics"), _.extend(_.clone(config), {"max-cache-size":5242880})));
 			
 		}).then(function(middleware){
 			

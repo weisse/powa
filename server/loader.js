@@ -4,11 +4,13 @@ var express = require("express");
 var bluebird = require("bluebird");
 var speedyStatic = require("speedy-static");
 
-module.exports = function(app){
+module.exports = function(app, config){
 	
 	return new bluebird.Promise(function(res, rej){
 			
-		if(app.get("allowCors")){
+		app.set("packageRootPath", config.packageRootPath);
+		
+		if(config.allowCors){
 			
 			app.use("/*", require(p.join(__dirname, "./middlewares/allowCors.js")));
 		    app.options("/*", require(p.join(__dirname, "./middlewares/options.js")));
@@ -20,7 +22,7 @@ module.exports = function(app){
 	    
 	    new bluebird.Promise(function(res, rej){
 			
-			res(speedyStatic(p.resolve(app.get("packageRootPath"))));
+			res(speedyStatic(p.resolve(config.packageRootPath), config));
 			
 		}).then(function(middleware){
 			

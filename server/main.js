@@ -49,9 +49,8 @@ module.exports = function(config){
 			}else{
 								
 				var app = express();
-				for(var attr in config) app.set(attr, config[attr]);
-				
-				loader(app).then(function(app){
+
+				loader(app, config).then(function(app){
 					instantiateServer(app, config, workerMessage);
 					res();
 				});
@@ -62,9 +61,8 @@ module.exports = function(config){
 			
 			bootstrapText();
 			var app = express();
-			for(var attr in config) app.set(attr, config[attr]);
 			
-			loader(app).then(function(app){
+			loader(app, config).then(function(app){
 				instantiateServer(app, config, masterMessage);
 				res();
 			});

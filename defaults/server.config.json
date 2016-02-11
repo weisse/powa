@@ -5,6 +5,7 @@
 	"allowCredentials":true,
 	"allowedOrigin":"*",
 	"allowedMethods":"*",
-	"allowedHeaders":"*"
+	"allowedHeaders":"*",
+	"max-cache-size": 104857600
 	
 }

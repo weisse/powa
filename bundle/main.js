@@ -63,10 +63,11 @@ module.exports = function(config){
 			}else{
 				
 				var app = express();
-				for(var attr in config) app.set(attr, config[attr]);
 				
-				clientLoader(app)
-				.then(serverLoader).then(function(app){
+				clientLoader(app, config)
+				.then(function(){
+					return serverLoader(app, config);
+				}).then(function(app){
 					instantiateServer(app, config, workerMessage);
 					res();
 				});
@@ -77,11 +78,12 @@ module.exports = function(config){
 			
 			bootstrapText();
 			var app = express();
-			for(var attr in config) app.set(attr, config[attr]);
 			
-			clientLoader(app)
-			.then(serverLoader).then(function(app){
-				instantiateServer(app, config, workerMessage);
+			clientLoader(app, config)
+			.then(function(){
+				return serverLoader(app, config);
+			}).then(function(app){
+				instantiateServer(app, config, masterMessage);
 				res();
 			});
 			

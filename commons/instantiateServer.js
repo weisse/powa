@@ -1,8 +1,5 @@
 module.exports = function(app, config, message){
 	
-	var host = app.get("host");
-	var port = app.get("port");
-	
 	if(config.httpsEnabled){
 		
 		var options = config.httpsOptions;
@@ -14,8 +11,8 @@ module.exports = function(app, config, message){
 		
 	}
 
-	server.listen(port, host, function(){
-		console.info(message(host, port));
+	server.listen(config.port, config.host, function(){
+		console.info(message(config.host, config.port));
 	});
 
 };
