@@ -57,7 +57,7 @@ module.exports = function(config){
 				
 				cluster.on("exit", function(worker, code, signal){
 					console.warn("POWA".yellow + " bundle worker " + worker.id.toString().green + " died".red);
-					if(workers == 0 && config.resumeWorker) cluster.fork();
+					if(workers <= 0 && config.resumeWorker) cluster.fork();
 				});
 				
 			}else{
