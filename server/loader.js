@@ -9,6 +9,10 @@ module.exports = function(app, config){
 	return new bluebird.Promise(function(res, rej){
 			
 		app.set("packageRootPath", config.packageRootPath);
+		app.set("allowedOrigin", config.allowedOrigin);
+		app.set("allowedMethods", congig.allowedMethods);
+		app.set("allowedHeaders", config.allowedHeaders);
+		app.set("allowCredentials", config.allowCredentials);
 		
 		if(config.allowCors){
 			
