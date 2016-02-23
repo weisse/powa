@@ -17,14 +17,14 @@ program
 program
     .command("client")
     .description("it runs your awesome web application client")
-    	.option("-F --config-file <configFile>", "it defines the location of your configuration file")
-    	.option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
-    	.option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
-    	.option("-S --https-enabled", "it defines if https will be used <default " + commonDefaults.httpsEnabled + ">")
-    	.option("-C, --cluster", "it activates cluster mode <default " + commonDefaults.cluster + ">")
+    	  .option("-F --config-file <configFile>", "it defines the location of your configuration file")
+    	  .option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
+    	  .option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
+    	  .option("-S --https-enabled", "it defines if https will be used <default " + commonDefaults.httpsEnabled + ">")
+    	  .option("-C, --cluster", "it activates cluster mode <default " + commonDefaults.cluster + ">")
         .option("-W --workers <workers>", "it defines the number of workers <default " + commonDefaults.workers + ">")
         .option("-R --resume-worker", "it defines if resume died workers or not <default " + commonDefaults.resumeWorker + ">")
-        .option("-r --package-root-url <packageRootURL>", "it defines the package root URL <default " + clientDefaults.packageRootURL + ">")
+        .option("-u --package-root-url <packageRootUrl>", "it defines the package root URL <default " + clientDefaults.packageRootUrl + ">")
         .option("-m --main-package <mainPackage>", "it defines the package to get first as index <default " + clientDefaults.mainPackage + ">")
         .option("-b --open-browser", "it chooses if open browser at start or not <default " + clientDefaults.openBrowser + ">")
         // SPEEDY-STATIC-OPTIONS
@@ -43,17 +43,17 @@ program
         .option("--prepare-cache", "it defines if prepare cache before listening to the port or not <default " + commonDefaults["prepare-cache"] + ">")
     .action(function(options){
 
-    	var config = _.extend(_.clone(commonDefaults), clientDefaults);
+    	  var config = _.extend(_.clone(commonDefaults), clientDefaults);
 
         // CHECK OPTIONS
         if(!_.isUndefined(options.configFile)) config = _.extend(config, require(path.resolve(process.cwd(), options.configFile)) || {});
         if(!_.isUndefined(options.host)) config.host = options.host;
         if(!_.isUndefined(options.port)) config.port = options.port;
         if(!_.isUndefined(options.httpsEnabled)) config.httpsEnabled = !config.httpsEnabled;
-		if(!_.isUndefined(options.cluster)) config.cluster = !config.cluster;
-		if(!_.isUndefined(options.workers)) config.workers = options.workers;
-		if(!_.isUndefined(options.resumeWorker)) config.resumeWorker = !config.resumeWorker;
-        if(!_.isUndefined(options.packageRootURL)) config.packageRootURL = options.packageRootURL;
+	      if(!_.isUndefined(options.cluster)) config.cluster = !config.cluster;
+	      if(!_.isUndefined(options.workers)) config.workers = options.workers;
+	      if(!_.isUndefined(options.resumeWorker)) config.resumeWorker = !config.resumeWorker;
+        if(!_.isUndefined(options.packageRootUrl)) config.packageRootUrl = options.packageRootUrl;
         if(!_.isUndefined(options.mainPackage)) config.mainPackage = options.mainPackage;
         if(!_.isUndefined(options.openBrowser)) config.openBrowser = !config.openBrowser;
         // SPEEDY-STATIC OPTIONS
@@ -72,18 +72,18 @@ program
         if(!_.isUndefined(options.prepareCache)) config["prepare-cache"] = !config["prepare-cache"];
 
         var urlObj = {
-          		 
+
          	hostname: config.host || commonDefaults.host,
          	port: config.port || commonDefaults.port,
          	protocol: config.httpsEnabled ? "https" : "http"
-         		 
+
         };
-    
+
         // RUN IT
         require(path.resolve(__dirname, "./client/main.js"))(config).then(function(){
-        	
+
         	if(config.openBrowser && cluster.isMaster) open(url.format(urlObj));
-        	
+
         });
 
     });
@@ -91,11 +91,11 @@ program
 program
     .command("server")
     .description("it serves your fantastic web packages")
-    	.option("-F --config-file <configFile>", "it defines the location of your configuration file")
-    	.option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
-    	.option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
-    	.option("-S --https-enabled", "it defines if https will be used <default " + commonDefaults.httpsEnabled + ">")
-    	.option("-C, --cluster", "it activates cluster mode <default " + commonDefaults.cluster + ">")
+    	  .option("-F --config-file <configFile>", "it defines the location of your configuration file")
+    	  .option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
+    	  .option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
+    	  .option("-S --https-enabled", "it defines if https will be used <default " + commonDefaults.httpsEnabled + ">")
+    	  .option("-C, --cluster", "it activates cluster mode <default " + commonDefaults.cluster + ">")
         .option("-W --workers <workers>", "it defines the number of workers <default " + commonDefaults.workers + ">")
         .option("-R --resume-worker", "it defines if resume died workers or not <default " + commonDefaults.resumeWorker + ">")
         .option("-r --package-root-path <packageRootPath>", "it defines the package root path <default " + serverDefaults.packageRootPath + ">")
@@ -120,7 +120,7 @@ program
         .option("--browser-cache-s-maxage <browserCacheSMaxage>", "it overrides the maximum browser cache age of proxies and CDNs <default " + commonDefaults["browser-cache-s-maxage"] + ">")
         .option("--prepare-cache", "it defines if prepare cache before listening to the port or not <default " + commonDefaults["prepare-cache"] + ">")
     .action(function(options){
-    	
+
     	var config = _.extend(_.clone(commonDefaults), serverDefaults);
 
          // CHECK OPTIONS
@@ -152,7 +152,7 @@ program
          if(!_.isUndefined(options.browserCacheMaxAge)) config["browser-cache-max-age"] = options.browserCacheMaxAge;
          if(!_.isUndefined(options.browserCacheSMaxage)) config["browser-cache-s-maxage"] = options.browserCacheSMaxage;
          if(!_.isUndefined(options.prepareCache)) config["prepare-cache"] = !config["prepare-cache"];
-         
+
          // RUN IT
          require(path.resolve(__dirname, "./server/main.js"))(config);
 
@@ -162,12 +162,13 @@ program
 	.command("bundle")
 	.description("it does all things together")
 		.option("-F --config-file <configFile>", "it defines the location of your configuration file")
-    	.option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
-    	.option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
-    	.option("-S --https-enabled", "it defines if https will be used <default " + commonDefaults.httpsEnabled + ">")
-    	.option("-C, --cluster", "it activates cluster mode <default " + commonDefaults.cluster + ">")
+    	  .option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
+    	  .option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
+    	  .option("-S --https-enabled", "it defines if https will be used <default " + commonDefaults.httpsEnabled + ">")
+    	  .option("-C, --cluster", "it activates cluster mode <default " + commonDefaults.cluster + ">")
         .option("-W --workers <workers>", "it defines the number of workers <default " + commonDefaults.workers + ">")
         .option("-R --resume-worker", "it defines if resume died workers or not <default " + commonDefaults.resumeWorker + ">")
+        .option("-u --package-root-url <packageRootUrl>", "it defines the package root URL <default this.HOST:this.PORT>")
         .option("-m --main-package <mainPackage>", "it defines the package to get as index <default " + clientDefaults.mainPackage + ">")
         .option("-b --open-browser", "it chooses if open browser at start or not <default " + clientDefaults.openBrowser + ">")
         .option("-r --package-root-path <packageRootPath>", "it defines the package root path <default " + serverDefaults.packageRootPath + ">")
@@ -192,9 +193,12 @@ program
         .option("--browser-cache-s-maxage <browserCacheSMaxage>", "it overrides the maximum browser cache age of proxies and CDNs <default " + commonDefaults["browser-cache-s-maxage"] + ">")
         .option("--prepare-cache", "it defines if prepare cache before listening to the port or not <default " + commonDefaults["prepare-cache"] + ">")
     .action(function(options){
-    	
-    	var config = _.extend(_.clone(commonDefaults), _.extend(_.clone(serverDefaults), clientDefaults));
-    		
+
+    	   var config = _.extend(_.clone(commonDefaults), _.extend(_.clone(serverDefaults), clientDefaults));
+
+	       /* don't be sure of client default packageRootUrl */
+	       config.packageRootUrl = null;
+
          // CHECK OPTIONS
          if(!_.isUndefined(options.configFile)) config = _.extend(config, require(path.resolve(process.cwd(), options.configFile)) || {});
          if(!_.isUndefined(options.host)) config.host = options.host;
@@ -203,6 +207,7 @@ program
          if(!_.isUndefined(options.cluster)) config.cluster = !config.cluster;
          if(!_.isUndefined(options.workers)) config.workers = options.workers;
          if(!_.isUndefined(options.resumeWorker)) config.resumeWorker = !config.resumeWorker;
+         if(!_.isUndefined(options.packageRootUrl)) config.packageRootUrl = options.packageRootUrl;
          if(!_.isUndefined(options.mainPackage)) config.mainPackage = options.mainPackage;
          if(!_.isUndefined(options.openBrowser)) config.openBrowser = !config.openBrowser;
          if(!_.isUndefined(options.packageRootPath)) config.packageRootPath = options.packageRootPath;
@@ -226,20 +231,20 @@ program
          if(!_.isUndefined(options.browserCacheMaxAge)) config["browser-cache-max-age"] = options.browserCacheMaxAge;
          if(!_.isUndefined(options.browserCacheSMaxage)) config["browser-cache-s-maxage"] = options.browserCacheSMaxage;
          if(!_.isUndefined(options.prepareCache)) config["prepare-cache"] = !config["prepare-cache"];
-         
+
          var urlObj = {
-           		 
+
          	hostname: config.host || commonDefaults.host,
          	port: config.port || commonDefaults.port,
          	protocol: config.httpsEnabled ? "https" : "http"
-         		 
+
          };
-         
+
          // RUN IT
          require(path.resolve(__dirname, "./bundle/main.js"))(config).then(function(){
-         	
+
         	 if(config.openBrowser && cluster.isMaster) open(url.format(urlObj));
-        	 
+
          });
 
     });

@@ -8,7 +8,7 @@ module.exports = function(app, config){
 	
 	return new bluebird.Promise(function(res, rej){
 		
-		app.set("packageRootURL", config.packageRootURL);
+		app.set("packageRootUrl", config.packageRootUrl);
 		
 		if(config.mainPackage){
 			

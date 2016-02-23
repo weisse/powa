@@ -15,7 +15,7 @@ module.exports = function(mainPackage){
 				
 				res.end(
 					data.toString("utf-8")
-						.replace("@BASE_PACKAGE_URL", req.app.get("packageRootURL"))
+						.replace("@BASE_PACKAGE_URL", req.app.get("packageRootUrl"))
 						.replace("@MAIN_PACKAGE", mainPackage)
 				);
 				

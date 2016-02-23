@@ -10,11 +10,11 @@ module.exports = function(config){
 	evalHost(config);
 	evalHttpsEnabled(config);
 	
-	var packageRootURL = config.packageRootURL;
+	var packageRootUrl = config.packageRootUrl;
 	
-	if(!packageRootURL){
+	if(!packageRootUrl){
 		throw new Error("You have to define base URL to fetch packages.");
-	}else if(!_.isString(packageRootURL)){
+	}else if(!_.isString(packageRootUrl)){
 		throw new Erorr("The base package URI must be a string.");
 	}
 	

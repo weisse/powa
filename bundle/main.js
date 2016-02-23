@@ -23,17 +23,19 @@ var workerMessage = function(host, port){
 };
 
 module.exports = function(config){
-	
+
 	return new bluebird.Promise(function(res, rej){
-		
+
 		if(!config) config = {};
-		config = _.extend(defaults, config);
+		config = _.extend(_.clone(defaults), config);
 		
 		/*
-		 * the packageRootURL has to match with bundle host and port
+		 * the packageRootUrl has to match with bundle host and port if not defined
 		 */
-		config.packageRootURL = "//" + config.host + ":" + config.port + "/packages";
-		
+		if(!config.packageRootUrl){
+			config.packageRootUrl = "//" + config.host + ":" + config.port + "/packages";
+		}
+
 		/*
 		 * evaluate configurations
 		 */
@@ -41,29 +43,29 @@ module.exports = function(config){
 		serverEvalConfig(config);
 
 		if(config.cluster){
-			
+
 			if(cluster.isMaster){
-				
+
 				bootstrapText();
-				
+
 				var workers = config.workers;
 				if(!workers) workers = require("os").cpus().length;
 				cluster.fork();
-				
+
 				cluster.on("listening", function(){
 					if(--workers > 0) cluster.fork();
 					else res();
 				});
-				
+
 				cluster.on("exit", function(worker, code, signal){
 					console.warn("POWA".yellow + " bundle worker " + worker.id.toString().green + " died".red);
 					if(workers <= 0 && config.resumeWorker) cluster.fork();
 				});
-				
+
 			}else{
-				
+
 				var app = express();
-				
+
 				clientLoader(app, config)
 				.then(function(){
 					return serverLoader(app, config);
@@ -71,14 +73,14 @@ module.exports = function(config){
 					instantiateServer(app, config, workerMessage);
 					res();
 				});
-				
+
 			}
-			
+
 		}else{
-			
+
 			bootstrapText();
 			var app = express();
-			
+
 			clientLoader(app, config)
 			.then(function(){
 				return serverLoader(app, config);
@@ -86,9 +88,9 @@ module.exports = function(config){
 				instantiateServer(app, config, masterMessage);
 				res();
 			});
-			
+
 		}
-		
+
 	});
-	
+
 };
