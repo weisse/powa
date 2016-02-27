@@ -17,13 +17,14 @@ program
 program
     .command("client")
     .description("it runs your awesome web application client")
-    	  .option("-F --config-file <configFile>", "it defines the location of your configuration file")
-    	  .option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
-    	  .option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
-    	  .option("-S --https-enabled", "it defines if https will be used <default " + commonDefaults.httpsEnabled + ">")
-    	  .option("-C, --cluster", "it activates cluster mode <default " + commonDefaults.cluster + ">")
+    	.option("-F --config-file <configFile>", "it defines the location of your configuration file")
+    	.option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
+    	.option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
+    	.option("-S --https-enabled", "it defines if https will be used <default " + commonDefaults.httpsEnabled + ">")
+    	.option("-C, --cluster", "it activates cluster mode <default " + commonDefaults.cluster + ">")
         .option("-W --workers <workers>", "it defines the number of workers <default " + commonDefaults.workers + ">")
         .option("-R --resume-worker", "it defines if resume died workers or not <default " + commonDefaults.resumeWorker + ">")
+        .option("-O --show-options", "it defines if print options or not <default " + commonDefaults.showOptions + ">")
         .option("-u --package-root-url <packageRootUrl>", "it defines the package root URL <default " + clientDefaults.packageRootUrl + ">")
         .option("-m --main-package <mainPackage>", "it defines the package to get first as index <default " + clientDefaults.mainPackage + ">")
         .option("-b --open-browser", "it chooses if open browser at start or not <default " + clientDefaults.openBrowser + ">")
@@ -50,9 +51,10 @@ program
         if(!_.isUndefined(options.host)) config.host = options.host;
         if(!_.isUndefined(options.port)) config.port = options.port;
         if(!_.isUndefined(options.httpsEnabled)) config.httpsEnabled = !config.httpsEnabled;
-	      if(!_.isUndefined(options.cluster)) config.cluster = !config.cluster;
-	      if(!_.isUndefined(options.workers)) config.workers = options.workers;
-	      if(!_.isUndefined(options.resumeWorker)) config.resumeWorker = !config.resumeWorker;
+	    if(!_.isUndefined(options.cluster)) config.cluster = !config.cluster;
+	    if(!_.isUndefined(options.workers)) config.workers = options.workers;
+	    if(!_.isUndefined(options.resumeWorker)) config.resumeWorker = !config.resumeWorker;
+	    if(!_.isUndefined(options.showOptions)) config.showOptions = !config.showOptions;
         if(!_.isUndefined(options.packageRootUrl)) config.packageRootUrl = options.packageRootUrl;
         if(!_.isUndefined(options.mainPackage)) config.mainPackage = options.mainPackage;
         if(!_.isUndefined(options.openBrowser)) config.openBrowser = !config.openBrowser;
@@ -91,13 +93,14 @@ program
 program
     .command("server")
     .description("it serves your fantastic web packages")
-    	  .option("-F --config-file <configFile>", "it defines the location of your configuration file")
-    	  .option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
-    	  .option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
-    	  .option("-S --https-enabled", "it defines if https will be used <default " + commonDefaults.httpsEnabled + ">")
-    	  .option("-C, --cluster", "it activates cluster mode <default " + commonDefaults.cluster + ">")
+    	.option("-F --config-file <configFile>", "it defines the location of your configuration file")
+    	.option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
+    	.option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
+    	.option("-S --https-enabled", "it defines if https will be used <default " + commonDefaults.httpsEnabled + ">")
+    	.option("-C, --cluster", "it activates cluster mode <default " + commonDefaults.cluster + ">")
         .option("-W --workers <workers>", "it defines the number of workers <default " + commonDefaults.workers + ">")
         .option("-R --resume-worker", "it defines if resume died workers or not <default " + commonDefaults.resumeWorker + ">")
+        .option("-O --show-options", "it defines if print options or not <default " + commonDefaults.showOptions + ">")
         .option("-r --package-root-path <packageRootPath>", "it defines the package root path <default " + serverDefaults.packageRootPath + ">")
         .option("--allow-cors", "it defines if allow CORS or not <default " + serverDefaults.allowCors + ">")
         .option("--allow-credentials", "it defines if allow users to send cookies on CORS requests <default " + serverDefaults.allowCredentials + ">")
@@ -131,6 +134,7 @@ program
          if(!_.isUndefined(options.cluster)) config.cluster = !config.cluster;
          if(!_.isUndefined(options.workers)) config.workers = options.workers;
          if(!_.isUndefined(options.resumeWorker)) config.resumeWorker = !config.resumeWorker;
+         if(!_.isUndefined(options.showOptions)) config.showOptions = !config.showOptions;
          if(!_.isUndefined(options.packageRootPath)) config.packageRootPath = options.packageRootPath;
          if(!_.isUndefined(options.allowCors)) config.allowCors = !config.allowCors;
          if(!_.isUndefined(options.allowCredentials)) config.allowCredentials = !config.allowCredentials;
@@ -162,12 +166,13 @@ program
 	.command("bundle")
 	.description("it does all things together")
 		.option("-F --config-file <configFile>", "it defines the location of your configuration file")
-    	  .option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
-    	  .option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
-    	  .option("-S --https-enabled", "it defines if https will be used <default " + commonDefaults.httpsEnabled + ">")
-    	  .option("-C, --cluster", "it activates cluster mode <default " + commonDefaults.cluster + ">")
+    	.option("-H --host <host>", "it defines the allowed host <default " + commonDefaults.host + ">")
+    	.option("-P --port <port>", "it defines the port number to listen <default " + commonDefaults.port + ">")
+    	.option("-S --https-enabled", "it defines if https will be used <default " + commonDefaults.httpsEnabled + ">")
+    	.option("-C, --cluster", "it activates cluster mode <default " + commonDefaults.cluster + ">")
         .option("-W --workers <workers>", "it defines the number of workers <default " + commonDefaults.workers + ">")
         .option("-R --resume-worker", "it defines if resume died workers or not <default " + commonDefaults.resumeWorker + ">")
+        .option("-O --show-options", "it defines if print options or not <default " + commonDefaults.showOptions + ">")
         .option("-u --package-root-url <packageRootUrl>", "it defines the package root URL <default this.HOST:this.PORT>")
         .option("-m --main-package <mainPackage>", "it defines the package to get as index <default " + clientDefaults.mainPackage + ">")
         .option("-b --open-browser", "it chooses if open browser at start or not <default " + clientDefaults.openBrowser + ">")
@@ -207,6 +212,7 @@ program
          if(!_.isUndefined(options.cluster)) config.cluster = !config.cluster;
          if(!_.isUndefined(options.workers)) config.workers = options.workers;
          if(!_.isUndefined(options.resumeWorker)) config.resumeWorker = !config.resumeWorker;
+         if(!_.isUndefined(options.showOptions)) config.showOptions = !config.showOptions;
          if(!_.isUndefined(options.packageRootUrl)) config.packageRootUrl = options.packageRootUrl;
          if(!_.isUndefined(options.mainPackage)) config.mainPackage = options.mainPackage;
          if(!_.isUndefined(options.openBrowser)) config.openBrowser = !config.openBrowser;

@@ -10,6 +10,7 @@ var defaults = _.extend(_.clone(commonDefaults), serverDefaults);
 var evalConfig = require(path.resolve(__dirname, "./evalConfig.js"));
 var loader = require(path.resolve(__dirname, "./loader.js"));
 var bootstrapText = require(path.join(__dirname, "../commons/bootstrapText/main.js"));
+var showOptions = require(path.join(__dirname, "../commons/showOptions.js"));
 var instantiateServer = require(path.join(__dirname, "../commons/instantiateServer.js"));
 var masterMessage = function(host, port){
 	return "POWA".yellow + " server is listening on HOST:" + host.cyan + " PORT:" + port.toString().cyan;
@@ -31,6 +32,10 @@ module.exports = function(config){
 			if(cluster.isMaster){
 				
 				bootstrapText();
+				
+				if(config.showOptions){
+					showOptions(config);
+				}
 				
 				var workers = config.workers;
 				if(!workers) workers = require("os").cpus().length;
@@ -60,6 +65,11 @@ module.exports = function(config){
 		}else{
 			
 			bootstrapText();
+			
+			if(config.showOptions){
+				showOptions(config);
+			}
+			
 			var app = express();
 			
 			loader(app, config).then(function(app){

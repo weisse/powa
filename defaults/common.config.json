@@ -1,12 +1,13 @@
 {
 	
-	"host":"0.0.0.0",
+	"host":"localhost",
 	"port":8080,
 	"httpsEnabled":false,
 	"httpsOptions":null,
 	"cluster":false,
 	"workers":0,
 	"resumeWorker":true,
+	"showOptions": false,
 	"compression": true,
 	"compression-level": 1,
 	"minify": false,
