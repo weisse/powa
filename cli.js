@@ -25,6 +25,12 @@ program
         .option("-W --workers <workers>", "it defines the number of workers <default " + commonDefaults.workers + ">")
         .option("-R --resume-worker", "it defines if resume died workers or not <default " + commonDefaults.resumeWorker + ">")
         .option("-O --show-options", "it defines if print options or not <default " + commonDefaults.showOptions + ">")
+        .option("--master-http-log-port <masterHttpLogPort>", "it defines in which port master process has to listen to http-log  <default " + commonDefaults["master-http-log-port"] + ">")
+        .option("--http-log", "it defines if stream http-log or not <default " + commonDefaults["http-log"] + ">")
+        .option("--http-log-format <httpLogFormat>", "it defines in which format show http-log <default " + commonDefaults["http-log-format"] + ">")
+        .option("--http-log-stream <httpLogStream>", "it defines in which stream write http-log  <default " + commonDefaults["http-log-stream"] + ">")
+        .option("--master-error-log-port <masterErrorLogPort>", "it defines in which port master process has to listen to error-log  <default " + commonDefaults["master-error-log-port"] + ">")
+        .option("--error-log-stream <errorLogStream>", "it defines in which stream write error-log  <default " + commonDefaults["error-log-stream"] + ">")
         .option("-u --package-root-url <packageRootUrl>", "it defines the package root URL <default " + clientDefaults.packageRootUrl + ">")
         .option("-m --main-package <mainPackage>", "it defines the package to get first as index <default " + clientDefaults.mainPackage + ">")
         .option("-b --open-browser", "it chooses if open browser at start or not <default " + clientDefaults.openBrowser + ">")
@@ -42,6 +48,9 @@ program
         .option("--browser-cache-max-age <browserCacheMaxAge>", "it defines the maximum browser cache age <default " + commonDefaults["browser-cache-max-age"] + ">")
         .option("--browser-cache-s-maxage <browserCacheSMaxage>", "it overrides the maximum browser cache age of proxies and CDNs <default " + commonDefaults["browser-cache-s-maxage"] + ">")
         .option("--prepare-cache", "it defines if prepare cache before listening to the port or not <default " + commonDefaults["prepare-cache"] + ">")
+        .option("--hide-dotfiles", "it defines if hide dotfiles or not <default " + commonDefaults["hide-dotfiles"] + ">")
+        .option("--ignore <ignore>", "it defines which file ignore <default " + commonDefaults["ignore"] + ">")
+        .option("--ignore-regexp <ignoreRegExp>", "it defines which file ignore providing regular expressions <default " + commonDefaults["ignoreRegExp"] + ">")
     .action(function(options){
 
     	  var config = _.extend(_.clone(commonDefaults), clientDefaults);
@@ -55,6 +64,12 @@ program
 	    if(!_.isUndefined(options.workers)) config.workers = options.workers;
 	    if(!_.isUndefined(options.resumeWorker)) config.resumeWorker = !config.resumeWorker;
 	    if(!_.isUndefined(options.showOptions)) config.showOptions = !config.showOptions;
+	    if(!_.isUndefined(options.masterHttpLogPort)) config["master-http-log-port"] = options.masterHttpLogPort;
+	    if(!_.isUndefined(options.httpLog)) config["http-log"] = !config["http-log"];
+        if(!_.isUndefined(options.httpLogFormat)) config["http-log-format"] = options.httpLogFormat;
+        if(!_.isUndefined(options.httpLogStream)) config["http-log-stream"] = options.httpLogStream.split(",");
+        if(!_.isUndefined(options.masterErrorLogPort)) config["master-error-log-port"] = options.masterErrorLogPort;
+        if(!_.isUndefined(options.errorLogStream)) config["error-log-stream"] = options.errorLogStream.split(",");
         if(!_.isUndefined(options.packageRootUrl)) config.packageRootUrl = options.packageRootUrl;
         if(!_.isUndefined(options.mainPackage)) config.mainPackage = options.mainPackage;
         if(!_.isUndefined(options.openBrowser)) config.openBrowser = !config.openBrowser;
@@ -72,6 +87,9 @@ program
         if(!_.isUndefined(options.browserCacheMaxAge)) config["browser-cache-max-age"] = options.browserCacheMaxAge;
         if(!_.isUndefined(options.browserCacheSMaxage)) config["browser-cache-s-maxage"] = options.browserCacheSMaxage;
         if(!_.isUndefined(options.prepareCache)) config["prepare-cache"] = !config["prepare-cache"];
+        if(!_.isUndefined(options.hideDotfiles)) config["hide-dotfiles"] = !config["hide-dotfiles"];
+        if(!_.isUndefined(options.ignore)) config["ignore"] = options.ignore.split(",");
+        if(!_.isUndefined(options.ignoreRegexp)) config["ignoreRegExp"] = options.ignoreRegexp.split(",");
 
         var urlObj = {
 
@@ -101,6 +119,12 @@ program
         .option("-W --workers <workers>", "it defines the number of workers <default " + commonDefaults.workers + ">")
         .option("-R --resume-worker", "it defines if resume died workers or not <default " + commonDefaults.resumeWorker + ">")
         .option("-O --show-options", "it defines if print options or not <default " + commonDefaults.showOptions + ">")
+        .option("--master-http-log-port <masterHttpLogPort>", "it defines in which port master process has to listen to http-log  <default " + commonDefaults["master-http-log-port"] + ">")
+        .option("--http-log", "it defines if stream http-log or not <default " + commonDefaults["http-log"] + ">")
+        .option("--http-log-format <httpLogFormat>", "it defines in which format show http-log <default " + commonDefaults["http-log-format"] + ">")
+        .option("--http-log-stream <httpLogStream>", "it defines in which stream write http-log  <default " + commonDefaults["http-log-stream"] + ">")
+        .option("--master-error-log-port <masterErrorLogPort>", "it defines in which port master process has to listen to error-log  <default " + commonDefaults["master-error-log-port"] + ">")
+        .option("--error-log-stream <errorLogStream>", "it defines in which stream write error-log  <default " + commonDefaults["error-log-stream"] + ">")
         .option("-r --package-root-path <packageRootPath>", "it defines the package root path <default " + serverDefaults.packageRootPath + ">")
         .option("--allow-cors", "it defines if allow CORS or not <default " + serverDefaults.allowCors + ">")
         .option("--allow-credentials", "it defines if allow users to send cookies on CORS requests <default " + serverDefaults.allowCredentials + ">")
@@ -122,6 +146,9 @@ program
         .option("--browser-cache-max-age <browserCacheMaxAge>", "it defines the maximum browser cache age <default " + commonDefaults["browser-cache-max-age"] + ">")
         .option("--browser-cache-s-maxage <browserCacheSMaxage>", "it overrides the maximum browser cache age of proxies and CDNs <default " + commonDefaults["browser-cache-s-maxage"] + ">")
         .option("--prepare-cache", "it defines if prepare cache before listening to the port or not <default " + commonDefaults["prepare-cache"] + ">")
+        .option("--hide-dotfiles", "it defines if hide dotfiles or not <default " + commonDefaults["hide-dotfiles"] + ">")
+        .option("--ignore <ignore>", "it defines which file ignore <default " + commonDefaults["ignore"] + ">")
+        .option("--ignore-regexp <ignoreRegExp>", "it defines which file ignore providing regular expressions <default " + commonDefaults["ignoreRegExp"] + ">")
     .action(function(options){
 
     	var config = _.extend(_.clone(commonDefaults), serverDefaults);
@@ -135,6 +162,12 @@ program
          if(!_.isUndefined(options.workers)) config.workers = options.workers;
          if(!_.isUndefined(options.resumeWorker)) config.resumeWorker = !config.resumeWorker;
          if(!_.isUndefined(options.showOptions)) config.showOptions = !config.showOptions;
+         if(!_.isUndefined(options.masterHttpLogPort)) config["master-http-log-port"] = options.masterHttpLogPort;
+         if(!_.isUndefined(options.httpLog)) config["http-log"] = !config["http-log"];
+         if(!_.isUndefined(options.httpLogFormat)) config["http-log-format"] = options.httpLogFormat;
+         if(!_.isUndefined(options.httpLogStream)) config["http-log-stream"] = options.httpLogStream.split(",");
+         if(!_.isUndefined(options.masterErrorLogPort)) config["master-error-log-port"] = options.masterErrorLogPort;
+         if(!_.isUndefined(options.errorLogStream)) config["error-log-stream"] = options.errorLogStream.split(",");
          if(!_.isUndefined(options.packageRootPath)) config.packageRootPath = options.packageRootPath;
          if(!_.isUndefined(options.allowCors)) config.allowCors = !config.allowCors;
          if(!_.isUndefined(options.allowCredentials)) config.allowCredentials = !config.allowCredentials;
@@ -156,6 +189,9 @@ program
          if(!_.isUndefined(options.browserCacheMaxAge)) config["browser-cache-max-age"] = options.browserCacheMaxAge;
          if(!_.isUndefined(options.browserCacheSMaxage)) config["browser-cache-s-maxage"] = options.browserCacheSMaxage;
          if(!_.isUndefined(options.prepareCache)) config["prepare-cache"] = !config["prepare-cache"];
+         if(!_.isUndefined(options.hideDotfiles)) config["hide-dotfiles"] = !config["hide-dotfiles"];
+         if(!_.isUndefined(options.ignore)) config["ignore"] = options.ignore.split(",");
+         if(!_.isUndefined(options.ignoreRegexp)) config["ignoreRegExp"] = options.ignoreRegexp.split(",");
 
          // RUN IT
          require(path.resolve(__dirname, "./server/main.js"))(config);
@@ -173,6 +209,12 @@ program
         .option("-W --workers <workers>", "it defines the number of workers <default " + commonDefaults.workers + ">")
         .option("-R --resume-worker", "it defines if resume died workers or not <default " + commonDefaults.resumeWorker + ">")
         .option("-O --show-options", "it defines if print options or not <default " + commonDefaults.showOptions + ">")
+        .option("--master-http-log-port <masterHttpLogPort>", "it defines in which port master process has to listen to http-log  <default " + commonDefaults["master-http-log-port"] + ">")
+        .option("--http-log", "it defines if stream http-log or not <default " + commonDefaults["http-log"] + ">")
+        .option("--http-log-format <httpLogFormat>", "it defines in which format show http-log <default " + commonDefaults["http-log-format"] + ">")
+        .option("--http-log-stream <httpLogStream>", "it defines in which stream write http-log  <default " + commonDefaults["http-log-stream"] + ">")
+        .option("--master-error-log-port <masterErrorLogPort>", "it defines in which port master process has to listen to error-log  <default " + commonDefaults["master-error-log-port"] + ">")
+        .option("--error-log-stream <errorLogStream>", "it defines in which stream write error-log  <default " + commonDefaults["error-log-stream"] + ">")
         .option("-u --package-root-url <packageRootUrl>", "it defines the package root URL <default this.HOST:this.PORT>")
         .option("-m --main-package <mainPackage>", "it defines the package to get as index <default " + clientDefaults.mainPackage + ">")
         .option("-b --open-browser", "it chooses if open browser at start or not <default " + clientDefaults.openBrowser + ">")
@@ -197,6 +239,9 @@ program
         .option("--browser-cache-max-age <browserCacheMaxAge>", "it defines the maximum browser cache age <default " + commonDefaults["browser-cache-max-age"] + ">")
         .option("--browser-cache-s-maxage <browserCacheSMaxage>", "it overrides the maximum browser cache age of proxies and CDNs <default " + commonDefaults["browser-cache-s-maxage"] + ">")
         .option("--prepare-cache", "it defines if prepare cache before listening to the port or not <default " + commonDefaults["prepare-cache"] + ">")
+        .option("--hide-dotfiles", "it defines if hide dotfiles or not <default " + commonDefaults["hide-dotfiles"] + ">")
+        .option("--ignore <ignore>", "it defines which file ignore <default " + commonDefaults["ignore"] + ">")
+        .option("--ignore-regexp <ignoreRegExp>", "it defines which file ignore providing regular expressions <default " + commonDefaults["ignoreRegExp"] + ">")
     .action(function(options){
 
     	   var config = _.extend(_.clone(commonDefaults), _.extend(_.clone(serverDefaults), clientDefaults));
@@ -212,6 +257,12 @@ program
          if(!_.isUndefined(options.cluster)) config.cluster = !config.cluster;
          if(!_.isUndefined(options.workers)) config.workers = options.workers;
          if(!_.isUndefined(options.resumeWorker)) config.resumeWorker = !config.resumeWorker;
+         if(!_.isUndefined(options.masterHttpLogPort)) config["master-http-log-port"] = options.masterHttpLogPort;
+         if(!_.isUndefined(options.httpLog)) config["http-log"] = !config["http-log"];
+         if(!_.isUndefined(options.httpLogFormat)) config["http-log-format"] = options.httpLogFormat;
+         if(!_.isUndefined(options.httpLogStream)) config["http-log-stream"] = options.httpLogStream.split(",");
+         if(!_.isUndefined(options.masterErrorLogPort)) config["master-error-log-port"] = options.masterErrorLogPort;
+         if(!_.isUndefined(options.errorLogStream)) config["error-log-stream"] = options.errorLogStream.split(",");
          if(!_.isUndefined(options.showOptions)) config.showOptions = !config.showOptions;
          if(!_.isUndefined(options.packageRootUrl)) config.packageRootUrl = options.packageRootUrl;
          if(!_.isUndefined(options.mainPackage)) config.mainPackage = options.mainPackage;
@@ -237,6 +288,9 @@ program
          if(!_.isUndefined(options.browserCacheMaxAge)) config["browser-cache-max-age"] = options.browserCacheMaxAge;
          if(!_.isUndefined(options.browserCacheSMaxage)) config["browser-cache-s-maxage"] = options.browserCacheSMaxage;
          if(!_.isUndefined(options.prepareCache)) config["prepare-cache"] = !config["prepare-cache"];
+         if(!_.isUndefined(options.hideDotfiles)) config["hide-dotfiles"] = !config["hide-dotfiles"];
+         if(!_.isUndefined(options.ignore)) config["ignore"] = options.ignore.split(",");
+         if(!_.isUndefined(options.ignoreRegexp)) config["ignoreRegExp"] = options.ignoreRegexp.split(",");
 
          var urlObj = {
 

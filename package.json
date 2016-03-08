@@ -1,6 +1,6 @@
 {
   "name": "powa",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Package Oriented Web Application platform.",
   "main": "main.js",
   "scripts": {
@@ -22,9 +22,10 @@
     "colors": "^1.1.2",
     "commander": "^2.9.0",
     "express": "^4.13.3",
+    "morgan": "^1.7.0",
     "open": "0.0.5",
     "semver": "^5.1.0",
-    "speedy-static": "^0.1.6",
+    "speedy-static": "^0.1.9",
     "underscore": "^1.8.3"
   },
   "preferGlobal": true

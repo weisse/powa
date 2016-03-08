@@ -8,10 +8,14 @@ var commonDefaults = require(path.resolve(__dirname, "../defaults/common.config.
 var clientDefaults = require(path.resolve(__dirname, "../defaults/client.config.json"));
 var defaults = _.extend(_.clone(commonDefaults), clientDefaults);
 var evalConfig = require(path.resolve(__dirname, "./evalConfig.js"));
-var loader= require(path.resolve(__dirname, "./loader.js"));
+var commonTopLoader = require(path.resolve(__dirname, "../commons/topLoader.js"));
+var commonBottomLoader = require(path.resolve(__dirname, "../commons/bottomLoader.js"));
+var clientLoader = require(path.resolve(__dirname, "./loader.js"));
 var bootstrapText = require(path.join(__dirname, "../commons/bootstrapText/main.js"));
 var showOptions = require(path.join(__dirname, "../commons/showOptions.js"));
 var instantiateServer = require(path.join(__dirname, "../commons/instantiateServer.js"));
+var activateLogServers = require(path.join(__dirname, "../commons/utils/activateLogServers.js"));
+var manageCluster = require(path.join(__dirname, "../commons/utils/manageCluster.js"));
 var masterMessage = function(host, port){
 	return "POWA".yellow + " client is listening on HOST:" + host.cyan + " PORT:" + port.toString().cyan;
 };
@@ -33,29 +37,27 @@ module.exports = function(config){
 				
 				bootstrapText();
 				
-				if(config.showOptions){
-					showOptions(config);
-				}
-				
-				var workers = config.workers;
-				if(!workers) workers = require("os").cpus().length;
-				cluster.fork();
-				
-				cluster.on("listening", function(){
-					if(--workers > 0) cluster.fork();
-					else res();
-				});
-				
-				cluster.on("exit", function(worker, code, signal){
-					console.warn("POWA".yellow + " client worker " + worker.id.toString().green + " died".red);
-					if(workers <= 0 && config.resumeWorker) cluster.fork();
+				activateLogServers(config).then(function(){
+					
+					if(config.showOptions){
+						showOptions(config);
+					}
+					
+					manageCluster("client", config).then(function(){
+						res();
+					});
+					
 				});
 				
 			}else{
 				
 				var app = express();
 				
-				loader(app, config).then(function(app){
+				commonTopLoader(app, config).then(function(app){
+					return clientLoader(app, config);
+				}).then(function(app){
+					return commonBottomLoader(app, config);
+				}).then(function(app){
 					instantiateServer(app, config, workerMessage);
 					res();
 				});
@@ -71,8 +73,12 @@ module.exports = function(config){
 			}
 			
 			var app = express();
-			
-			loader(app, config).then(function(app){
+
+			commonTopLoader(app, config).then(function(app){
+				return clientLoader(app, config);
+			}).then(function(app){
+				return commonBottomLoader(app, config);
+			}).then(function(app){
 				instantiateServer(app, config, masterMessage);
 				res();
 			});

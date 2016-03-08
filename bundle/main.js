@@ -1,4 +1,5 @@
 var cluster = require("cluster");
+var dgram = require("dgram");
 var colors = require("colors");
 var express = require("express");
 var bluebird = require("bluebird");
@@ -11,11 +12,15 @@ var serverDefaults = require(path.resolve(__dirname, "../defaults/server.config.
 var defaults = _.extend(_.clone(commonDefaults), _.extend(_.clone(serverDefaults), clientDefaults));
 var clientEvalConfig = require(path.resolve(__dirname, "../client/evalConfig.js"));
 var serverEvalConfig = require(path.resolve(__dirname, "../server/evalConfig.js"));
+var commonTopLoader = require(path.resolve(__dirname, "../commons/topLoader.js"));
+var commonBottomLoader = require(path.resolve(__dirname, "../commons/bottomLoader.js"));
 var clientLoader = require(path.resolve(__dirname, "../client/loader.js"));
 var serverLoader = require(path.resolve(__dirname, "../server/loader.js"));
 var bootstrapText = require(path.join(__dirname, "../commons/bootstrapText/main.js"));
 var showOptions = require(path.join(__dirname, "../commons/showOptions.js"));
 var instantiateServer = require(path.join(__dirname, "../commons/instantiateServer.js"));
+var activateLogServers = require(path.join(__dirname, "../commons/utils/activateLogServers.js"));
+var manageCluster = require(path.join(__dirname, "../commons/utils/manageCluster.js"));
 var masterMessage = function(host, port){
 	return "POWA".yellow + " bundle is listening on HOST:" + host.cyan + " PORT:" + port.toString().cyan;
 };
@@ -49,31 +54,28 @@ module.exports = function(config){
 
 				bootstrapText();
 				
-				if(config.showOptions){
-					showOptions(config);
-				}
-				
-				var workers = config.workers;
-				if(!workers) workers = require("os").cpus().length;
-				cluster.fork();
-
-				cluster.on("listening", function(){
-					if(--workers > 0) cluster.fork();
-					else res();
-				});
-
-				cluster.on("exit", function(worker, code, signal){
-					console.warn("POWA".yellow + " bundle worker " + worker.id.toString().green + " died".red);
-					if(workers <= 0 && config.resumeWorker) cluster.fork();
+				activateLogServers(config).then(function(){
+					
+					if(config.showOptions){
+						showOptions(config);
+					}
+					
+					manageCluster("bundle", config).then(function(){
+						res();
+					});
+					
 				});
 
 			}else{
 
 				var app = express();
 
-				clientLoader(app, config)
-				.then(function(){
+				commonTopLoader(app, config).then(function(app){
+					return clientLoader(app, config);
+				}).then(function(app){
 					return serverLoader(app, config);
+				}).then(function(app){
+					return commonBottomLoader(app, config);
 				}).then(function(app){
 					instantiateServer(app, config, workerMessage);
 					res();
@@ -91,9 +93,12 @@ module.exports = function(config){
 			
 			var app = express();
 
-			clientLoader(app, config)
-			.then(function(){
+			commonTopLoader(app, config).then(function(app){
+				return clientLoader(app, config);
+			}).then(function(app){
 				return serverLoader(app, config);
+			}).then(function(app){
+				return commonBottomLoader(app, config);
 			}).then(function(app){
 				instantiateServer(app, config, masterMessage);
 				res();
