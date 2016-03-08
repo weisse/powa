@@ -20,6 +20,15 @@
 	"browser-cache": true,
 	"browser-cache-max-age": 300,
 	"browser-cache-s-maxage": 300,
-	"prepare-cache": false
+	"prepare-cache": false,
+	"master-http-log-port": 30800,
+	"http-log": false,
+	"http-log-format": null,
+	"http-log-stream": ["stdout", "powa.http.log"],
+	"master-error-log-port": 30801,
+	"error-log-stream": ["stderr", "powa.error.log"],
+	"hide-dotfiles": true,
+	"ignore": [],
+	"ignoreRegExp": []
 
 }
