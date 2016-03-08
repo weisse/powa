@@ -30,6 +30,8 @@ module.exports = function(app, config){
 	return function(req, res, next){
 		if(config["http-log"] && _.isArray(config["http-log-stream"])){
 			middleware(req, res, next);
+		}else{
+			next();
 		}
 	};
 	
